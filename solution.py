@@ -35,7 +35,78 @@ def grid(values):
     assert len(values) == 81
     return dict(zip(boxes, values))
 
+def naked_twins(values):
+    """Eliminate values using the naked twins strategy.
 
+    The naked twins strategy says that if you have two or more unallocated boxes
+    in a unit and there are only two digits that can go in those two boxes, then
+    those two digits can be eliminated from the possible assignments of all other
+    boxes in the same unit.
+
+    Parameters
+    ----------
+    values(dict)
+        a dictionary of the form {'box_name': '123456789', ...}
+
+    Returns
+    -------
+    dict
+        The values dictionary with the naked twins eliminated from peers
+
+    Notes
+    -----
+    Your solution can either process all pairs of naked twins from the input once,
+    or it can continue processing pairs of naked twins until there are no such
+    pairs remaining -- the project assistant test suite will accept either
+    convention. However, it will not accept code that does not process all pairs
+    of naked twins from the original input. (For example, if you start processing
+    pairs of twins and eliminate another pair of twins before the second pair
+    is processed then your code will fail the PA test suite.)
+
+    The first convention is preferred for consistency with the other strategies,
+    and because it is simpler (since the reduce_puzzle function already calls this
+    strategy repeatedly).
+
+    See Also
+    --------
+    Pseudocode for this algorithm on github:
+    https://github.com/udacity/artificial-intelligence/blob/master/Projects/1_Sudoku/pseudocode.md
+    """
+    # TODO: Implement this function!
+    
+    #initiazing the variable/array
+    
+    naked_twins = []
+    maybe_twins = [box for box in values.keys() if len(values[box]) == 1]   #find the possibles boxes with 2 possibilities
+    
+
+    #append to naked_twins and return this values
+    
+    for box1 in maybe_twins:
+           
+            for box2 in peers[box1]:
+                values1= values[box1]
+                values2= values[box2]
+                if values1 == values2:
+                         naked_twins.append(box1,box2)
+                                    
+    
+ #Eliminate the naked twins ->
+
+ #intersection with the peers ->
+
+    for indice in range(len(naked_twins)):
+
+                paresA,paresB = set(peers([naked_twins[indice][0]])),set(peers([naked_twins[indice][1]]))
+                pares_intersection = paresA & paresB
+        
+                print(pares_intersection)
+        
+                for pares_valores in pares_intersecton:
+                       if len(values[pares_valores]) > 1:
+                            for remover_valores in values[box1]:
+                                     values = assign_value(values, pares_valores, values[pares_valores].replace(remove_valores, ''))
+    return values
         
 def eliminate(values):
     """Apply the eliminate strategy to a Sudoku puzzle
@@ -125,78 +196,7 @@ def reduce_puzzle(values):
             return False
     return values
 
-def naked_twins(values):
-    """Eliminate values using the naked twins strategy.
 
-    The naked twins strategy says that if you have two or more unallocated boxes
-    in a unit and there are only two digits that can go in those two boxes, then
-    those two digits can be eliminated from the possible assignments of all other
-    boxes in the same unit.
-
-    Parameters
-    ----------
-    values(dict)
-        a dictionary of the form {'box_name': '123456789', ...}
-
-    Returns
-    -------
-    dict
-        The values dictionary with the naked twins eliminated from peers
-
-    Notes
-    -----
-    Your solution can either process all pairs of naked twins from the input once,
-    or it can continue processing pairs of naked twins until there are no such
-    pairs remaining -- the project assistant test suite will accept either
-    convention. However, it will not accept code that does not process all pairs
-    of naked twins from the original input. (For example, if you start processing
-    pairs of twins and eliminate another pair of twins before the second pair
-    is processed then your code will fail the PA test suite.)
-
-    The first convention is preferred for consistency with the other strategies,
-    and because it is simpler (since the reduce_puzzle function already calls this
-    strategy repeatedly).
-
-    See Also
-    --------
-    Pseudocode for this algorithm on github:
-    https://github.com/udacity/artificial-intelligence/blob/master/Projects/1_Sudoku/pseudocode.md
-    """
-    # TODO: Implement this function!
-    
-    #initiazing the variable/array
-    
-    naked_twins = []
-    maybe_twins = [box for box in values.keys() if len(values[box]) == 1]   #find the possibles boxes with 2 possibilities
-    
-
-    #append to naked_twins and return this values
-    
-    for box1 in maybe_twins:
-           
-                    for box2 in peers[box1]:
-            
-                        if set(values[box1]) == set(values[box2]):
-                                    naked_twins.append(box1,box2)
-                                    
-    
- #Eliminate the naked twins ->
-
- #intersection with the peers ->
-
-    for indice in range(len(naked_twins)):
-
-                paresA = set(peers([naked_twins[indice][0]]))
-                paresB = set(peers([naked_twins[indice][1]]))
-                pares_intersection = paresA & paresB
-        
-                print(pares_intersection)
-        
-                for pares_valores in pares_intersecton:
-                       if len(values[pares_valores]) > 1:
-                            for remover_valores in values[box1]:
-                                     values = assign_value(values, pares_valores, values[pares_valores].replace(remove_valores, ''))
-    return values
 
 def search(values):
     """Apply depth first search to solve Sudoku puzzles in order to solve puzzles
